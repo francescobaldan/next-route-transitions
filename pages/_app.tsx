@@ -2,14 +2,23 @@
 
 import { StylesProvider } from "@material-ui/core";
 import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 function MyApp({ Component, pageProps, router }) {
+  const [prevPath, setPrevPath] = useState([router.asPath]);
+
+  useEffect(() => {
+    const updatedPath = [...prevPath];
+    if (updatedPath[updatedPath.length - 1] !== router.asPath) {
+      updatedPath.push(router.asPath);
+      setPrevPath(updatedPath)
+    }
+  }, [router.asPath]);
 
   return (
     <StylesProvider injectFirst>
       <AnimatePresence exitBeforeEnter>
-        <Component {...pageProps} key={router.asPath} />
+        <Component {...pageProps} prevPath={prevPath} key={router.asPath} />
       </AnimatePresence>
     </StylesProvider>
   );

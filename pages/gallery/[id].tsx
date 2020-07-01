@@ -3,8 +3,12 @@ import { jsx } from "@emotion/core";
 import data from "../../utils/data";
 import { motion } from "framer-motion";
 import { Grid, Typography } from "@material-ui/core";
+import { useEffect } from "react";
 
-const GalleryImage = ({ image }) => {
+const GalleryImage = ({ image, ...otherProps }) => {
+  
+  console.log(otherProps);
+
   return (
     <motion.div
       initial="initial"
@@ -96,6 +100,10 @@ const GalleryImage = ({ image }) => {
     </motion.div>
   );
 };
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 GalleryImage.getInitialProps = (ctx) => {
   // const image = data[parseInt(ctx?.query?.imageId)];

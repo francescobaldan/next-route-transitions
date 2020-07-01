@@ -8,16 +8,16 @@ import Link from "next/link";
 import Router from "next/dist/next-server/server/router";
 import { useRouter } from "next/router";
 
-const GalleryPage = ({ images }) => {
+const GalleryPage = ({ images, ...otherProps }) => {
   const router = useRouter();
+  console.log(otherProps);
 
   const [rect, setRect] = useState(undefined);
   const [fullImage, setFullImage] = useState("");
 
   useEffect(() => {
-    console.log(rect);
-    console.log(rect === undefined ? 1 : 0);
-  }, [rect]);
+    router?.prefetch("/gallery/[id]", `/gallery/1`);
+  }, []);
 
   const fade = {
     initial: {
@@ -44,6 +44,10 @@ const GalleryPage = ({ images }) => {
     },
     exit: {
       opacity: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.25, 1, 0.5, 1],
+      },
     },
   };
 
@@ -58,6 +62,9 @@ const GalleryPage = ({ images }) => {
   const onImageClick = (event, index) => {
     setRect(event?.target?.getBoundingClientRect());
     setFullImage(images[index]?.urls?.high);
+    // router.push("/gallery/[id]", `/gallery/${images[index]?.index}`, {
+    //   shallow: true,
+    // });
   };
 
   return (
@@ -119,6 +126,7 @@ const GalleryPage = ({ images }) => {
           {images.map((image, index) => (
             <Grid item xs={4} key={index}>
               <motion.div
+                // @ts-ignore
                 variants={fade}
                 animate={!rect ? "animate" : "hidden"}
                 // whileHover={{ scale: 0.96 }}
@@ -129,6 +137,7 @@ const GalleryPage = ({ images }) => {
                   href="/gallery/[id]"
                   as={`/gallery/${images[index]?.index}`}
                   passHref={false}
+                  prefetch={true}
                 >
                   <img
                     src={image?.urls?.low}
