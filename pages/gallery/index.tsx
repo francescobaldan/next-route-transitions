@@ -58,15 +58,13 @@ const GalleryPage = ({ images }) => {
   const onImageClick = (event, index) => {
     setRect(event?.target?.getBoundingClientRect());
     setFullImage(images[index]?.urls?.high);
-    console.log(index);
-    setTimeout(() => router.push(`/gallery/${images[index]?.index}`), 800);
   };
 
   return (
     <motion.div initial="initial" animate="animate" exit="exit">
       {rect && (
         <motion.div
-          animate={{
+          exit={{
             top: 72,
             left: "50%",
             width: 1200,
@@ -127,20 +125,25 @@ const GalleryPage = ({ images }) => {
                 // whileTap={{ position: "absolute" }}
                 css={{ willChange: "transform", cursor: "pointer" }}
               >
-                <img
-                  src={image?.urls?.low}
-                  onClick={(e) => onImageClick(e, index)}
-                  css={{
-                    width: "100%",
-                    height: 272,
-                    objectFit: "cover",
-                    borderRadius: 12,
-                  }}
-                />
+                <Link
+                  href="/gallery/[id]"
+                  as={`/gallery/${images[index]?.index}`}
+                  passHref={false}
+                >
+                  <img
+                    src={image?.urls?.low}
+                    onClick={(e) => onImageClick(e, index)}
+                    css={{
+                      width: "100%",
+                      height: 272,
+                      objectFit: "cover",
+                      borderRadius: 12,
+                    }}
+                  />
+                </Link>
               </motion.div>
             </Grid>
           ))}
-          
         </Grid>
       </motion.div>
     </motion.div>

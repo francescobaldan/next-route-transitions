@@ -9,7 +9,7 @@ const GalleryImage = ({ image }) => {
     <motion.div
       initial="initial"
       animate="animate"
-      exit={{ opacity: 0, transition: { duration: 2 } }}
+      exit={{ opacity: 0, transition: { duration: 0.5 } }}
     >
       <Grid
         container

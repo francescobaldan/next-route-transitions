@@ -2,6 +2,7 @@
 
 import { StylesProvider } from "@material-ui/core";
 import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 function MyApp({ Component, pageProps, router }) {
 
