@@ -19,14 +19,14 @@ const ImagePage = ({ image }) => {
   const [scale, setScale] = useState(1);
 
   return (
-    <motion.div initial="initial" animate="animate" exit={{ opacity: 1 }}>
+    <motion.div initial="initial" animate="animate" exit={{ opacity: 1,  }}>
       <Global
         styles={{ "*": { userSelect: "none" }, body: { overflow: "hidden" } }}
       />
       <motion.div
         initial={{
           opacity: 0,
-          scale: 0.9,
+          scale: 0.8,
           // filter: "contrast(150%) grayscale(60%)",
         }}
         animate={{

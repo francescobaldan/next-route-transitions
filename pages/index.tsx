@@ -14,10 +14,10 @@ const Home = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      exit={{ opacity: 0, transition: { duration: 1 } }}
     >
       <Grid container>cxsda</Grid>
-      <Link href="/images/0">
+      <Link href="/images/[imageId]" as="/images/1">
         <a>Image</a>
       </Link>
     </motion.div>

@@ -5,12 +5,10 @@ import { AnimatePresence } from "framer-motion";
 
 function MyApp({ Component, pageProps, router }) {
 
-  console.log(router.query.imageId)
-
   return (
     <StylesProvider injectFirst>
       <AnimatePresence exitBeforeEnter>
-        <Component {...pageProps} key={router.query.imageId} />
+        <Component {...pageProps} key={router.asPath} />
       </AnimatePresence>
     </StylesProvider>
   );
