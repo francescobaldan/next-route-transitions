@@ -3,6 +3,7 @@
 import { StylesProvider } from "@material-ui/core";
 import { AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
+import AnimatedCursorProvider from "../components/AnimatedCursor";
 
 function MyApp({ Component, pageProps, router }) {
   const [prevPath, setPrevPath] = useState([router.asPath]);
@@ -11,15 +12,17 @@ function MyApp({ Component, pageProps, router }) {
     const updatedPath = [...prevPath];
     if (updatedPath[updatedPath.length - 1] !== router.asPath) {
       updatedPath.push(router.asPath);
-      setPrevPath(updatedPath)
+      setPrevPath(updatedPath);
     }
   }, [router.asPath]);
 
   return (
     <StylesProvider injectFirst>
-      <AnimatePresence exitBeforeEnter>
-        <Component {...pageProps} prevPath={prevPath} key={router.asPath} />
-      </AnimatePresence>
+      <AnimatedCursorProvider>
+        <AnimatePresence exitBeforeEnter>
+          <Component {...pageProps} prevPath={prevPath} key={router.asPath} />
+        </AnimatePresence>
+      </AnimatedCursorProvider>
     </StylesProvider>
   );
 }

@@ -12,6 +12,7 @@ const Home = () => {
 
   return (
     <motion.div
+      style={{ padding: 99 }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 1 } }}
@@ -20,6 +21,14 @@ const Home = () => {
       <Link href="/images/[imageId]" as="/images/1">
         <a>Image</a>
       </Link>
+      <div
+        css={{
+          width: 400,
+          height: 300,
+          backgroundColor: "#000",
+          marginTop: 100,
+        }}
+      />
     </motion.div>
   );
 };

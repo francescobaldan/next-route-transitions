@@ -129,8 +129,6 @@ const GalleryPage = ({ images, ...otherProps }) => {
                 // @ts-ignore
                 variants={fade}
                 animate={!rect ? "animate" : "hidden"}
-                // whileHover={{ scale: 0.96 }}
-                // whileTap={{ position: "absolute" }}
                 css={{ willChange: "transform", cursor: "pointer" }}
               >
                 <Link
