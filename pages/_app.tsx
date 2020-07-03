@@ -8,6 +8,40 @@ import AnimatedCursorProvider from "../components/AnimatedCursor";
 function MyApp({ Component, pageProps, router }) {
   const [prevPath, setPrevPath] = useState([router.asPath]);
 
+  const cursorStyle = {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: "#ffffff",
+    mixBlendMode: "exclusion",
+  };
+
+  const cursorStates = {
+    default: {
+      scale: 0.4,
+      backgroundColor: "#ffffff",
+      border: "2px solid #ffffff",
+    },
+    hover: {
+      scale: 0.99,
+      backgroundColor: "rgba(255, 255, 255, 0)",
+    },
+    blankClick: {
+      scale: 0.3,
+    },
+    click: {
+      scale: 0.4,
+      backgroundColor: "rgba(255, 255, 255, 0)",
+    },
+  };
+
+  const movementConfig = { mass: 2, tension: 300, friction: 50 };
+
+  const clickableElements = {
+    byTag: ["A", "BUTTON"],
+    byClassName: [".clickable"],
+  };
+
   useEffect(() => {
     const updatedPath = [...prevPath];
     if (updatedPath[updatedPath.length - 1] !== router.asPath) {
@@ -18,7 +52,7 @@ function MyApp({ Component, pageProps, router }) {
 
   return (
     <StylesProvider injectFirst>
-      <AnimatedCursorProvider>
+      <AnimatedCursorProvider cursorStyle={cursorStyle}>
         <AnimatePresence exitBeforeEnter>
           <Component {...pageProps} prevPath={prevPath} key={router.asPath} />
         </AnimatePresence>
