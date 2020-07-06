@@ -1,63 +1,101 @@
-// @ts-nocheck
+// // @ts-nocheck
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
 import { animated, useSpring, interpolate } from "react-spring";
-import { transform } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 interface IAnimatedCursorProvider {
   cursorStyle: any;
+  states?: any;
+  movementConfig?: any;
+  animationConfig?: any;
+  hideOnLeave?: boolean;
   children: any;
 }
 
-const positionTransform = (x, y) =>
+const positionTransform: any = (x, y) =>
   `translate3d(${x}px, ${y}px, 0) translate3d(-100%, -100%, 0)`;
 
 const AnimatedCursorProvider = (props: IAnimatedCursorProvider) => {
-  const { cursorStyle, children } = props;
+  const {
+    cursorStyle,
+    states,
+    movementConfig,
+    animationConfig,
+    hideOnLeave = true,
+    children,
+  } = props;
 
-  const [cursorPosition, setCursorPosition] = useSpring(() => ({
-    xy: [0 - cursorStyle?.width / 2, 0 - cursorStyle?.height / 2],
-    config: { mass: 2, tension: 300, friction: 50 },
-  }));
-
-  const positionObject = {
-    transform: interpolate(
-      [cursorPosition.xy.interpolate(positionTransform)],
-      (position) => `${position}`
-    ),
+  const defaultCursorStyle = {
+    position: "fixed",
+    zIndex: 999999,
+    top: 0,
+    left: 0,
+    pointerEvents: "none",
   };
 
-  // const [animation, setAnimation] = useSpring(() => ({
-  //   scale: 0.4,
-  //   backgroundColor: "rgba(255, 255, 255, .0)",
-  //   border: "0px solid red",
-  //   config: {
-  //     tension: 180,
-  //     friction: 12,
-  //   },
-  // }));
+  // @ts-ignore
+  const [cursorPosition, setCursorPosition] = useSpring(() => ({
+    xy: [0 - cursorStyle?.width / 2, 0 - cursorStyle?.height / 2],
+    config: movementConfig ?? { mass: 2, tension: 300, friction: 50 },
+  }));
+
+  // Create animation object for every custom property
+
+  // @ts-ignore
+  const [animation, setAnimation] = useSpring(() => ({
+    ...states?.default,
+    config: animationConfig ?? {
+      tension: 180,
+      friction: 12,
+    },
+  }));
+
+  const keys = Object.keys(states?.default);
+
+  const animationStyle = {};
+
+  keys?.map((key) => {
+    animationStyle[key] = animation[key]?.interpolate((prop) => `${prop}`);
+  });
+
+  const transitionStyle = {
+    // transform: interpolate(
+    //   [
+    //     cursorPosition.xy.interpolate(positionTransform),
+    //     // animation?.scale &&
+    //       // animation.scale.interpolate((value) => `scale(${value})`),
+    //     // animation?.rotate &&
+    //     //   animation.rotate.interpolate((value) => `rotate(${value}deg)`),
+    //   ],
+    //   (position, scale) => `${position} ${scale}`
+    // ),
+    transform: cursorPosition.xy.interpolate(positionTransform),
+  };
 
   return (
     <div
       style={{
+        position: "relative",
         width: "100%",
         height: "100%",
-        minHeight: "100vh",
+        // minHeight: "100vh",
         backgroundColor: "#fff",
       }}
-      // onMouseDown={() => setAnimation({ scale: 0.3 })}
-      // onMouseUp={() => setAnimation({ scale: 0.4 })}
-      // onMouseLeave={() => setAnimation({ scale: 0 })}
-      // onMouseEnter={(e) => setPosition({ xy: [e.clientX + 50, e.clientY + 50]
-      //  }) }
+      onMouseDown={(e) =>
+        (e.nativeEvent.target as any).style.cursor === "pointer"
+          ? setAnimation(states?.click)
+          : setAnimation(states?.blankClick)
+      }
+      onMouseUp={(e) =>
+        (e.nativeEvent.target as any).style.cursor === "pointer"
+          ? setAnimation(states?.hover)
+          : setAnimation(states?.default)
+      }
+      onMouseLeave={() => hideOnLeave && setAnimation({ scale: 0 })}
       onMouseMove={(e) => {
-        console.log(
-          e.clientX,
-          cursorStyle,
-          e.clientX - cursorStyle?.width / 2
-          // e.clientX + cursorStyle.width / 2,
-          // e.clientY + cursorStyle / 2
-        );
+        const target: any = e.nativeEvent.target;
+
         setCursorPosition({
           xy: [
             e.clientX + cursorStyle?.width / 2,
@@ -65,59 +103,60 @@ const AnimatedCursorProvider = (props: IAnimatedCursorProvider) => {
           ],
         });
 
-        // if (e.target.tagName === "A" || e.target.tagName === "BUTTON") {
-        //   setAnimation({
-        //     backgroundColor: "rgba(255, 255, 255, 0)",
-        //     border: "2px solid rgba(255, 255, 255, 1)",
-        //   });
-        //   if (e.buttons === 1) {
-        //     setAnimation({ scale: 0.9 });
-        //   } else {
-        //     setAnimation({ scale: 0.99 });
-        //   }
-        // } else {
-        //   setAnimation({
-        //     backgroundColor: "rgba(255, 255, 255, 1)",
-        //     border: "2px solid rgba(0, 0, 0, 0)",
-        //   });
-        //   if (e.buttons === 1) {
-        //     setAnimation({ scale: 0.3 });
-        //   } else {
-        //     setAnimation({ scale: 0.4 });
-        //   }
-        // }
+        if (e.buttons === 1) {
+          target.style.cursor === "pointer"
+            ? setAnimation(states?.click)
+            : setAnimation(states?.blankClick);
+        } else {
+          target.style.cursor === "pointer"
+            ? setAnimation(states?.hover)
+            : setAnimation(states?.default);
+        }
       }}
     >
       <animated.div
-        // style={{
-        //   position: "fixed",
-        //   zIndex: 999999,
-        //   width: 100,
-        //   height: 100,
-        //   borderRadius: 50,
-        //   border: animation.border.interpolate((border) => `${border}`),
-        //   backgroundColor: animation.backgroundColor.interpolate(
-        //     (background) => `${background}`
-        //   ),
-        //   // backgroundColor: "red",
-        //   // transform: cursor.xy.interpolate(trans),
-        //   // transform: interpolate([position.xy, scale.scale], trans),
-        //   transform: interpolate(
-        //     [
-        //       // @ts-ignore
-        //       animation.scale.interpolate((v) => `scale(${v})`),
-        //       // @ts-ignore
-        //       position.xy.interpolate(trans),
-        //     ],
-        //     (scale, position) => `${position} ${scale}`
-        //   ),
-        //   willChange: "transform",
-        //   pointerEvents: "none",
-        //   mixBlendMode: "exclusion",
-        // }}
-        style={{ ...cursorStyle, ...positionObject, }}
+        style={{
+          ...defaultCursorStyle,
+          ...cursorStyle,
+          ...transitionStyle,
+          ...animationStyle,
+        }}
       />
       {children}
+    </div>
+  );
+};
+
+export const Pointer = (props) => {
+  const ref = useRef(undefined);
+
+  const addRecursivePointer = (current) => {
+    if (current?.childNodes?.length) {
+      current.childNodes.forEach((el) => {
+        if (el.style) {
+          el.style.cursor = "pointer";
+          addRecursivePointer(el);
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      addRecursivePointer(ref.current);
+    }, 100);
+  }, []);
+
+  return (
+    <div
+      ref={(r) => (ref.current = r)}
+      style={{
+        ...props.style,
+        width: "auto",
+        cursor: "pointer",
+      }}
+    >
+      {props.children}
     </div>
   );
 };

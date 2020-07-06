@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { Pointer } from "../../components/AnimatedCursor";
 
 const ImagePage = ({ image }) => {
   const router = useRouter();
@@ -19,7 +20,7 @@ const ImagePage = ({ image }) => {
   const [scale, setScale] = useState(1);
 
   return (
-    <motion.div initial="initial" animate="animate" exit={{ opacity: 1,  }}>
+    <motion.div initial="initial" animate="animate" exit={{ opacity: 1 }}>
       <Global
         styles={{ "*": { userSelect: "none" }, body: { overflow: "hidden" } }}
       />
@@ -154,26 +155,30 @@ const ImagePage = ({ image }) => {
                 color: "#000000",
               }}
             />
-            <Button
-              children="Zonta"
-              onClick={() => setScale((scale) => scale - 0.1)}
-            />
-            <Link
-              passHref
-              href="/images/[imageId]"
-              as={`/images/${index === 4 ? 1 : index + 1}`}
-            >
-              <a css={{ textDecoration: "none" }}>
-                <Typography
-                  children={`Vai alla pagina successiva`}
-                  css={{
-                    fontSize: 18,
-                    cursor: "pointer",
-                    color: "#000000",
-                  }}
-                />
-              </a>
-            </Link>
+            <Pointer>
+              <Button
+                children="Zonta"
+                onClick={() => setScale((scale) => scale - 0.1)}
+              />
+            </Pointer>
+            <Pointer>
+              <Link
+                passHref
+                href="/images/[imageId]"
+                as={`/images/${index === 4 ? 1 : index + 1}`}
+              >
+                <a css={{ textDecoration: "none" }}>
+                  <Typography
+                    children={`Vai alla pagina successiva`}
+                    css={{
+                      fontSize: 18,
+                      cursor: "pointer",
+                      color: "#000000",
+                    }}
+                  />
+                </a>
+              </Link>
+            </Pointer>
           </Grid>
         </Grid>
       </motion.div>

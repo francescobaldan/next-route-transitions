@@ -11,36 +11,34 @@ function MyApp({ Component, pageProps, router }) {
   const cursorStyle = {
     width: 100,
     height: 100,
-    borderRadius: 50,
-    backgroundColor: "#ffffff",
+    borderRadius: 24,
     mixBlendMode: "exclusion",
   };
 
   const cursorStates = {
     default: {
       scale: 0.4,
+      rotate: "45deg",
       backgroundColor: "#ffffff",
       border: "2px solid #ffffff",
     },
     hover: {
       scale: 0.99,
+      rotate: "20deg",
       backgroundColor: "rgba(255, 255, 255, 0)",
     },
     blankClick: {
       scale: 0.3,
+      rotate: "135deg",
     },
     click: {
-      scale: 0.4,
+      scale: 0.9,
+      rotate: "110deg",
       backgroundColor: "rgba(255, 255, 255, 0)",
     },
   };
 
   const movementConfig = { mass: 2, tension: 300, friction: 50 };
-
-  const clickableElements = {
-    byTag: ["A", "BUTTON"],
-    byClassName: [".clickable"],
-  };
 
   useEffect(() => {
     const updatedPath = [...prevPath];
@@ -52,7 +50,16 @@ function MyApp({ Component, pageProps, router }) {
 
   return (
     <StylesProvider injectFirst>
-      <AnimatedCursorProvider cursorStyle={cursorStyle}>
+      <AnimatedCursorProvider
+        cursorStyle={cursorStyle}
+        states={cursorStates}
+        movementConfig={movementConfig}
+        animationConfig={{
+          tension: 500,
+          friction: 60,
+          clamp: true,
+        }}
+      >
         <AnimatePresence exitBeforeEnter>
           <Component {...pageProps} prevPath={prevPath} key={router.asPath} />
         </AnimatePresence>

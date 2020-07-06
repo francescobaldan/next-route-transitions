@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Router from "next/dist/next-server/server/router";
 import { useRouter } from "next/router";
+import { Pointer } from "../../components/AnimatedCursor";
 
 const GalleryPage = ({ images, ...otherProps }) => {
   const router = useRouter();
@@ -131,23 +132,25 @@ const GalleryPage = ({ images, ...otherProps }) => {
                 animate={!rect ? "animate" : "hidden"}
                 css={{ willChange: "transform", cursor: "pointer" }}
               >
-                <Link
-                  href="/gallery/[id]"
-                  as={`/gallery/${images[index]?.index}`}
-                  passHref={false}
-                  prefetch={true}
-                >
-                  <img
-                    src={image?.urls?.low}
-                    onClick={(e) => onImageClick(e, index)}
-                    css={{
-                      width: "100%",
-                      height: 272,
-                      objectFit: "cover",
-                      borderRadius: 12,
-                    }}
-                  />
-                </Link>
+                <Pointer>
+                  <Link
+                    href="/gallery/[id]"
+                    as={`/gallery/${images[index]?.index}`}
+                    passHref={false}
+                    prefetch={true}
+                  >
+                    <img
+                      src={image?.urls?.low}
+                      onClick={(e) => onImageClick(e, index)}
+                      css={{
+                        width: "100%",
+                        height: 272,
+                        objectFit: "cover",
+                        borderRadius: 12,
+                      }}
+                    />
+                  </Link>
+                </Pointer>
               </motion.div>
             </Grid>
           ))}
