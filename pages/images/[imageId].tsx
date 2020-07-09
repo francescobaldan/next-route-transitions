@@ -125,19 +125,42 @@ const ImagePage = ({ image }) => {
                   }}
                 />
               </motion.div>
-              <Typography
-                children={image?.index}
-                css={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  fontSize: 540,
-                  fontWeight: 600,
-                  color: "rgba(255, 255, 255, .3)",
-                  zIndex: 4,
+              <motion.div
+                initial={{ y: 50, opacity: 0.6, scale: 0.9 }}
+                animate={{
+                  y: 0,
+                  opacity: 1,
+                  scale: 1.1,
+                  transition: {
+                    ease: [0.33, 1, 0.68, 1],
+                    duration: 0.4,
+                  },
                 }}
-              />
+                exit={{
+                  y: 40,
+                  opacity: 0,
+                  scale: 1.4,
+                  transition: {
+                    ease: [0.33, 1, 0.68, 1],
+                    delay: 0.1,
+                    duration: 0.3,
+                  },
+                }}
+              >
+                <Typography
+                  children={image?.index}
+                  css={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    fontSize: 540,
+                    fontWeight: 600,
+                    color: "rgba(255, 255, 255, .3)",
+                    zIndex: 4,
+                  }}
+                />
+              </motion.div>
             </div>
           </Grid>
           <Grid
@@ -145,19 +168,29 @@ const ImagePage = ({ image }) => {
             container
             justify="space-between"
             alignItems="center"
-            css={{ paddingLeft: 48, paddingRight: 48, height: 80 }}
+            css={{
+              paddingLeft: 48,
+              paddingRight: 48,
+              height: 80,
+            }}
           >
-            <Typography
-              children={`Author: ${image?.author}`}
-              css={{
-                fontSize: 18,
-                // fontWeight: 700,
-                color: "#000000",
-              }}
-            />
+            <Pointer>
+              <Link href="/">
+                <a href="/">
+                  <Typography
+                    children={`Author: ${image?.author}`}
+                    css={{
+                      fontSize: 18,
+                      // fontWeight: 700,
+                      color: "#000000",
+                    }}
+                  />
+                </a>
+              </Link>
+            </Pointer>
             <Pointer>
               <Button
-                children="Zonta"
+                children="Scala"
                 onClick={() => setScale((scale) => scale - 0.1)}
               />
             </Pointer>

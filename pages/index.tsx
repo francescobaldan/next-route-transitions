@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/core";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import React, { useEffect } from "react";
@@ -13,48 +13,100 @@ const Home = () => {
 
   return (
     <motion.div
-      style={{ padding: 99 }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 1 } }}
     >
-      {/* <AnimatedCursorProvider
-        cursorStyle={{ width: 10, height: 10, backgroundColor: "red" }}
-        states={{
-          default: { borderRadius: 10 },
-          hover: {},
-          blankClick: {},
-          click: {},
-        }}
-      > */}
-        <React.Fragment>
-          <h1>hnujixsaj</h1>
-          <Grid container>cxsda</Grid>
+      <Grid container>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          css={{
+            height: "100vh",
+            padding: 100,
+            boxSizing: "border-box",
+            backgroundColor: "#ffffff",
+            "::selection": {
+              color: "#ffffff",
+              background: "#000000",
+              opacity: 1,
+            },
+          }}
+        >
+          <Typography
+            children="Transizioni custom fra Routes e custom cursor in Next.js"
+            variant="h3"
+            css={{
+              fontWeight: 600,
+              "::selection": {
+                color: "#ffffff",
+                background: "#000000",
+              },
+            }}
+          />
           <Pointer>
             <Link href="/images/[imageId]" as="/images/1">
-              <a>
-                <div>acdscdscdscdescdscds</div>
-              </a>
+              <Link href="/images/1">
+                <Typography
+                  children="Slideshow immagini"
+                  variant="h5"
+                  css={{
+                    marginTop: 92,
+                    borderBottom: "2px solid #000000",
+                    "::selection": {
+                      color: "#ffffff",
+                      background: "#000000",
+                    },
+                  }}
+                />
+              </Link>
             </Link>
           </Pointer>
-          <div
-            style={{
-              width: 50,
-              height: 50,
-              cursor: "pointer",
-              backgroundColor: "blue",
-            }}
-          />
-          <div
+          <Pointer>
+            <Link href="/gallery">
+              <Link href="/gallery">
+                <Typography
+                  children="Galleria"
+                  variant="h5"
+                  css={{
+                    marginTop: 24,
+                    borderBottom: "2px solid #000000",
+                    "::selection": {
+                      color: "#ffffff",
+                      background: "#000000",
+                    },
+                  }}
+                />
+              </Link>
+            </Link>
+          </Pointer>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          css={{
+            height: "100vh",
+            padding: 100,
+            boxSizing: "border-box",
+            backgroundColor: "#000000",
+          }}
+        >
+          <Typography
+            children="Questo testo serve chiaramente solo a mostrare come si comporta il cursore in un testo bianco su sfondo nero."
+            variant="h3"
             css={{
-              width: 400,
-              height: 300,
-              backgroundColor: "#000",
-              marginTop: 100,
+              fontWeight: 600,
+              color: "#ffffff",
+              "::selection": {
+                color: "#000000",
+                background: "#ffffff",
+              },
             }}
           />
-        </React.Fragment>
-      {/* </AnimatedCursorProvider> */}
+        </Grid>
+      </Grid>
     </motion.div>
   );
 };

@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps, router }) {
   const cursorStyle = {
     width: 100,
     height: 100,
-    borderRadius: 24,
+    borderRadius: 100,
     mixBlendMode: "exclusion",
   };
 
